@@ -1,2 +1,3 @@
 # basicCron
-Basic Cron for GoLang
+
+Basic Cron package for GoLang 
