@@ -11,27 +11,27 @@ func TestCronError(t *testing.T) {
 
 	cron := New(time.Minute)
 
-	if err := cron.AddFunc(time.Now(), time.Hour, func () {	fmt.Println("Hello, world") }, 10); err == nil {
+	if err := cron.AddFunc(time.Now().Add(time.Second*2), time.Hour, func () {	fmt.Println("Hello, world") }, 10); err == nil {
 		t.Error("This AddFunc should return Error, wrong number of args")
 	}
 
-	if err := cron.AddFunc(time.Now(), time.Hour, nil); err == nil {
+	if err := cron.AddFunc(time.Now().Add(time.Second*2), time.Hour, nil); err == nil {
 		t.Error("This AddFunc should return Error, fn is nil")
 	}
 
-	if err := cron.AddFunc(time.Now(), time.Hour, 0); err == nil {
+	if err := cron.AddFunc(time.Now().Add(time.Second*2), time.Hour, 0); err == nil {
 		t.Error("This AddFunc should return Error, fn is not func kind")
 	}
 
-	if err := cron.AddFunc(time.Now(), time.Hour, func (s string, n int) {	fmt.Printf("We have params here, string `%s` and nymber %d\n", s, n) }, "s", 10, 12); err == nil {
+	if err := cron.AddFunc(time.Now().Add(time.Second*2), time.Hour, func (s string, n int) {	fmt.Printf("We have params here, string `%s` and nymber %d\n", s, n) }, "s", 10, 12); err == nil {
 		t.Error("This AddFunc should return Error, wrong number of args")
 	}
 
-	if err := cron.AddFunc(time.Now(), time.Hour, func (s string, n int) {	fmt.Printf("We have params here, string `%s` and nymber %d\n", s, n) }, "s", "s2"); err == nil {
+	if err := cron.AddFunc(time.Now().Add(time.Second*2), time.Hour, func (s string, n int) {	fmt.Printf("We have params here, string `%s` and nymber %d\n", s, n) }, "s", "s2"); err == nil {
 		t.Error("This AddFunc should return Error, args are not the correct type")
 	}
 
-	if err := cron.AddFunc(time.Now(), time.Hour, func (s string, n int) {	fmt.Printf("We have params here, string `%s` and nymber %d\n", s, n) }, "s", "s2"); err == nil {
+	if err := cron.AddFunc(time.Now().Add(time.Second*2), time.Hour, func (s string, n int) {	fmt.Printf("We have params here, string `%s` and nymber %d\n", s, n) }, "s", "s2"); err == nil {
 		t.Error("This AddFunc should return Error, syntax error")
 	}
 
@@ -41,14 +41,14 @@ func TestCronError(t *testing.T) {
 		Name string
 	}
 	var u user
-	if err := cron.AddFunc(time.Now(), time.Hour, func (u user) { fmt.Println("Custom type as param") }, u); err != nil {
+	if err := cron.AddFunc(time.Now().Add(time.Second*2), time.Hour, func (u user) { fmt.Println("Custom type as param") }, u); err != nil {
 		t.Error(err)
 	}
 
 	type Foo interface {
 		Bar() string
 	}
-	if err := cron.AddFunc(time.Now(), time.Hour, func (i Foo) { i.Bar() }, u); err == nil {
+	if err := cron.AddFunc(time.Now().Add(time.Second*2), time.Hour, func (i Foo) { i.Bar() }, u); err == nil {
 		t.Error("This should return error, type that don't implements interface assigned as param")
 	}
 }
@@ -59,11 +59,11 @@ func TestCronBasic(t *testing.T) {
 
 	cron := New(time.Second)
 
-	if err := cron.AddFunc(time.Now(), time.Second*3, func() { testN++ }); err != nil {
+	if err := cron.AddFunc(time.Now().Add(time.Second*1), time.Second*3, func() { testN++ }); err != nil {
 		t.Fatal(err)
 	}
 
-	if err := cron.AddFunc(time.Now(), time.Second*3, func(s string) { testS = s }, "param"); err != nil {
+	if err := cron.AddFunc(time.Now().Add(time.Second*1), time.Second*3, func(s string) { testS = s }, "param"); err != nil {
 		t.Fatal(err)
 	}
 
@@ -71,7 +71,7 @@ func TestCronBasic(t *testing.T) {
 
 	time.Sleep(time.Second * 10)
 
-	if testN != 4 {
+	if testN != 3 {
 		t.Error("func not executed correctly")
 	}
 
