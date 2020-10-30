@@ -1,8 +1,7 @@
-package test
+package basicCron
 
 import (
 	"fmt"
-	"scm.forcemanager.net/backend/ms_videocallHandler/basicCron"
 	"sync"
 	"testing"
 	"time"
@@ -10,7 +9,7 @@ import (
 
 func TestCronError(t *testing.T) {
 
-	cron := basicCron.New(time.Minute)
+	cron := New(time.Minute)
 
 	if err := cron.AddFunc(time.Now(), time.Hour, func () {	fmt.Println("Hello, world") }, 10); err == nil {
 		t.Error("This AddFunc should return Error, wrong number of args")
@@ -58,7 +57,7 @@ func TestCronBasic(t *testing.T) {
 	testN := 0
 	testS := ""
 
-	cron := basicCron.New(time.Second)
+	cron := New(time.Second)
 
 	if err := cron.AddFunc(time.Now(), time.Second*3, func() { testN++ }); err != nil {
 		t.Fatal(err)
@@ -87,7 +86,7 @@ func TestCronSchedule(t *testing.T) {
 	testN := 0
 	testS := ""
 
-	cron := basicCron.New(time.Second*2)
+	cron := New(time.Second*2)
 
 	var wg sync.WaitGroup
 	wg.Add(2)
@@ -122,5 +121,3 @@ func TestCronSchedule(t *testing.T) {
 	}
 	cron.Stop()
 }
-
-
