@@ -1,2 +1,2 @@
 # basicCron
-Basic Cronr for GoLang
+Basic Cron for GoLang
