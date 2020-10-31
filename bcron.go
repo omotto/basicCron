@@ -23,13 +23,13 @@ type Cron struct {
 	jobs 			[]Job
 }
 
-// Constructor
+// New returns a new Cron object
 
 func New(period time.Duration) *Cron {
 	return &Cron{running: false, period : period, stop: make(chan bool) }
 }
 
-// Public Methods
+// AddFunc adds a func to the Cron to be executed
 
 func (c *Cron) AddFunc(triggerDate time.Time, period time.Duration, function interface{}, fparams ...interface{}) (err error) {
 	// Check input parameters
@@ -55,12 +55,16 @@ func (c *Cron) AddFunc(triggerDate time.Time, period time.Duration, function int
 	return err
 }
 
+// Stops Cron scheduler
+
 func (c *Cron) Stop() {
 	if c.running == true {
 		c.stop <- true
 		c.running = false
 	}
 }
+
+// Starts Cron scheduler
 
 func (c *Cron) Start() {
 	c.running = true
