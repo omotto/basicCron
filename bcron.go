@@ -8,30 +8,30 @@ import (
 	"time"
 )
 
-type job struct {
+type Job struct {
 	triggerDate		time.Time
 	period			time.Duration
 	function 		interface{}
 	fparams			[]interface{}
 }
 
-type cron struct {
+type Cron struct {
 //	mu 				*sync.Mutex
 	running			bool
 	stop			chan bool
 	period			time.Duration
-	jobs 			[]job
+	jobs 			[]Job
 }
 
 // Constructor
 
-func New(period time.Duration) *cron {
-	return &cron{running: false, period : period, stop: make(chan bool) }
+func New(period time.Duration) *Cron {
+	return &Cron{running: false, period : period, stop: make(chan bool) }
 }
 
 // Public Methods
 
-func (c *cron) AddFunc(triggerDate time.Time, period time.Duration, function interface{}, fparams ...interface{}) (err error) {
+func (c *Cron) AddFunc(triggerDate time.Time, period time.Duration, function interface{}, fparams ...interface{}) (err error) {
 	// Check input parameters
 	// -- Check first trigger date is in the future
 	if triggerDate.Before(time.Now()) {	return errors.New("triggerDate must be in the future") }
@@ -50,19 +50,19 @@ func (c *cron) AddFunc(triggerDate time.Time, period time.Duration, function int
 	}
 	// Add new job
 //	c.mu.Lock()
-		c.jobs = append(c.jobs, job { triggerDate: triggerDate, period: period, function: function, fparams: fparams })
+		c.jobs = append(c.jobs, Job { triggerDate: triggerDate, period: period, function: function, fparams: fparams })
 //	c.mu.Unlock()
 	return err
 }
 
-func (c *cron) Stop() {
+func (c *Cron) Stop() {
 	if c.running == true {
 		c.stop <- true
 		c.running = false
 	}
 }
 
-func (c *cron) Start() {
+func (c *Cron) Start() {
 	c.running = true
 	go func() {
 		for {
@@ -86,7 +86,7 @@ func (c *cron) Start() {
 
 // Private Methods
 
-func (c *cron) execJob(j job) {
+func (c *Cron) execJob(j Job) {
 	defer func() {
 		if r := recover(); r != nil { log.Println("crontab error", r) }
 	}()
