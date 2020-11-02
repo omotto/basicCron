@@ -17,8 +17,10 @@ Usage
 	cron := basicCron.New(time.Minute)
 
 	// Add new function to execute in two seconds, every hour
-	if err := cron.AddFunc(time.Now().Add(time.Second*2), time.Hour, func (name string) { fmt.Println("Hello " + name) }, "Bob"); err != nil {
+	if id, err := cron.AddFunc(time.Now().Add(time.Second*2), time.Hour, func (name string) { fmt.Println("Hello " + name) }, "Bob"); err != nil {
 		t.Error(err)
+	} else {
+		fmt.Println(id)
 	}
 
 	cron.Start() // Start cron scheduler
