@@ -9,7 +9,7 @@ import (
 
 func TestCronError(t *testing.T) {
 
-	cron := New(time.Minute)
+	cron := New(time.Second)
 
 	if _, err := cron.AddFunc(time.Now().Add(time.Second*2), time.Hour, func () {	fmt.Println("Hello, world") }, 10); err == nil {
 		t.Error("This AddFunc should return Error, wrong number of args")

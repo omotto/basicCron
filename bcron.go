@@ -19,7 +19,6 @@ type Job struct {
 
 type Cron struct {
 	lastIndex		int64
-	//mu 				*sync.Mutex
 	running			bool
 	stop			chan bool
 	period			time.Duration
@@ -28,11 +27,15 @@ type Cron struct {
 	delJob			chan string
 }
 
-// New returns a new Cron object
 
+/**
+ * Creates a new Cron instance
+ *
+ * @param 	time.Duration	: period of time between time check
+ * @return 	*Cron			: new Cron object
+ */
 func New(period time.Duration) *Cron {
 	return &Cron{
-	//	mu: &sync.Mutex{},
 		running: false,
 		period : period,
 		stop: make(chan bool),
@@ -142,7 +145,7 @@ func (c *Cron) Start() {
 
 func (c *Cron) execJob(j Job) {
 	defer func() {
-		if r := recover(); r != nil { log.Println("crontab error", r) }
+		if r := recover(); r != nil { log.Println("cron exec func ", j.uuid, " error ", r) }
 	}()
 	args := make([]reflect.Value, len(j.fparams))
 	for i, param := range j.fparams {
