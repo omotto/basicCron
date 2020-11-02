@@ -1,4 +1,4 @@
-package basicCron
+package basiccron
 
 import (
 	"fmt"

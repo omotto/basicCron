@@ -1,6 +1,6 @@
 /*
 
-Package basicCron implements a cron scheduler and job runner.
+Package basiccron implements a cron scheduler and job runner.
 
 Installation
 
@@ -30,5 +30,5 @@ Usage
 	cron.Stop() // Stop cron scheduler
 
 */
-package basicCron
+package basiccron
 
